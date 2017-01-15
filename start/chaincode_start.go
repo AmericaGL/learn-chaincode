@@ -65,6 +65,27 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 
 	return nil, errors.New("Received unknown function invocation: " + function)
 }
+//(write) function that is in the Ivoke function 
+// Both functions check for a certain number of arguments, and then write a key/value pair to the ledger.
+// write uses two arguments, allowing you to pass in both the key and the value for the call to PutState
+//  this function allows you to store any key/value pair you want into the blockchain ledger.
+func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+    var key, value string
+    var err error
+    fmt.Println("running write()")
+
+    if len(args) != 2 {
+        return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
+    }
+
+    key = args[0]                            //rename for fun
+    value = args[1]
+    err = stub.PutState(key, []byte(value))  //write the variable into the chaincode state
+    if err != nil {
+        return nil, err
+    }
+    return nil, nil
+}
 
 // Query is our entry point for queries, that also returns information in the response
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
