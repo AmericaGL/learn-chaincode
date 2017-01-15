@@ -28,7 +28,7 @@ type SimpleChaincode struct {
 }
 
 // ============================================================================================================================
-// Main
+// 3 Main Functions of ChainCode - init(), invoke(), query()
 // ============================================================================================================================
 func main() {
 	err := shim.Start(new(SimpleChaincode))
@@ -37,7 +37,7 @@ func main() {
 	}
 }
 
-// Init resets all the things
+// Init resets all the things, as well deploy chaincode
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -59,7 +59,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	return nil, errors.New("Received unknown function invocation: " + function)
 }
 
-// Query is our entry point for queries
+// Query is our entry point for queries, that also returns information in the response
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("query is running " + function)
 
